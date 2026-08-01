@@ -7,7 +7,7 @@ __pycache__/
 *.pyo
 
 # Banco local
-db.sqlite3
+#db.sqlite3
 
 # Arquivos estáticos gerados
 staticfiles/
