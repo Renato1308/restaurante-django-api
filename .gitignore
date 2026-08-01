@@ -10,7 +10,7 @@ __pycache__/
 #db.sqlite3
 
 # Arquivos estáticos gerados
-staticfiles/
+#staticfiles/
 
 # VS Code
 .vscode/

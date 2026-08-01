@@ -1,4 +1,29 @@
-body {
+/* --- RESET GLOBAL E CONFIGURAÇÕES DE BASE --- */
+* {
   margin: 0;
-  font-family: Arial, sans-serif;
+  padding: 0;
+  box-sizing: border-box; /* Garante que padding e border não alterem a largura real dos elementos */
+  scroll-behavior: smooth; /* Proporciona rolagem suave ao clicar em links âncora (#) */
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden; /* Evita que barras de rolagem horizontais apareçam acidentalmente no mobile */
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #333333;
+  background-color: #fafafa;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased; /* Suaviza a renderização de fontes no Safari/Mac */
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Imagens responsivas por padrão */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }

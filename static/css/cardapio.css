@@ -3,16 +3,23 @@
   padding: 60px 7%;
   color: #333333;
   background-color: #f7f3ed; /* Tom creme/papel elegante */
-  
-  /* Foto da mesa posta (_cInD8wTzRA) com overlay suave para efeito marca d'água */
+
+  /* Foto da mesa posta com overlay suave para efeito marca d'água */
   background-image: 
     linear-gradient(rgba(247, 243, 237, 0.88), rgba(247, 243, 237, 0.88)),
-    url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600&auto=format&fit=crop&q=80');
-  
+    url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600&auto=format&fit=crop&q=80");
+
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  background-attachment: fixed;
+  background-attachment: scroll; /* Alterado de fixed para scroll para evitar falhas de renderização mobile */
+}
+
+/* Mantém o parallax suave apenas em telas de Desktop */
+@media (min-width: 992px) {
+  .cardapio-container {
+    background-attachment: fixed;
+  }
 }
 
 .cardapio-header {
@@ -42,7 +49,7 @@
   color: #666;
 }
 
-/* Área dos botões de categoria (LAYOUT QUE VOCÊ GOSTOU) */
+/* Área dos botões de categoria */
 .categoria-filtros {
   display: flex;
   justify-content: center;
@@ -86,8 +93,8 @@
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid #eee;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-  transition: transform 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: flex;
   flex-direction: column;
 }
@@ -107,8 +114,13 @@
   transition: transform 0.3s ease;
 }
 
+.card-item:hover {
+  transform: translateY(-4px); /* Elevação suave do card no hover */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
 .card-item:hover .card-image {
-  transform: scale(1.05); /* Efeito de zoom suave na foto ao passar o mouse */
+  transform: scale(1.05); /* Zoom na foto */
 }
 
 .card-info {
@@ -161,18 +173,36 @@
   border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
-  transition: opacity 0.2s;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
 }
 
 .card-btn-add:hover {
-  opacity: 0.9;
+  background-color: #d35400;
+  opacity: 1;
 }
 
-/* Ajustes Mobile */
+/* Ajustes Responsivos para Mobile e Tablet */
 @media (max-width: 768px) {
+  .cardapio-container {
+    padding: 40px 4%;
+  }
+
+  .cardapio-header h2 {
+    font-size: 2rem;
+  }
+
   .cardapio-grid {
     display: flex;
     flex-direction: column;
     gap: 20px;
+  }
+
+  .categoria-filtros {
+    gap: 8px;
+  }
+
+  .filtro-btn {
+    padding: 6px 14px;
+    font-size: 0.85rem;
   }
 }

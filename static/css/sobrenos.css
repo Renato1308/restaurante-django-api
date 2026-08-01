@@ -1,114 +1,154 @@
 /* ==================== SEÇÃO SOBRE NÓS ==================== */
+section.sobre-secao,
 .sobre-secao {
-  padding: 80px 7% !important;
-  background-color: #fcfbfa !important;
-  color: #333333 !important;
-  display: block !important;
+  padding: 80px 7%;
+  background-color: #fcfbfa;
+  color: #333333;
+  display: block;
 }
 
-.sobre-container {
-  display: flex !important;
-  flex-direction: row !important; /* Força ficar lado a lado no PC */
-  align-items: center !important;
-  gap: 60px !important;
-  max-width: 1200px !important;
-  margin: 0 auto !important;
+.sobre-secao .sobre-container {
+  display: flex;
+  flex-direction: row; /* Lado a lado no Desktop */
+  align-items: center;
+  gap: 60px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.sobre-imagens {
-  flex: 1 !important;
-  position: relative !important;
-  display: flex !important;
-  gap: 20px !important;
+/* Área das Imagens Compostas */
+.sobre-secao .sobre-imagens {
+  flex: 1;
+  position: relative;
+  display: flex;
+  gap: 20px;
+  min-width: 0; /* Previne estouro flexbox */
 }
 
-.imagem-wrapper {
-  border-radius: 12px !important;
-  overflow: hidden !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
+.sobre-secao .imagem-wrapper {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
 }
 
-.imagem-wrapper img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  display: block !important;
+.sobre-secao .imagem-wrapper:hover {
+  transform: translateY(-5px);
 }
 
-.imagem-wrapper.principal {
-  width: 60% !important;
-  height: 400px !important;
+.sobre-secao .imagem-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-.imagem-wrapper.secundaria {
-  width: 50% !important;
-  height: 300px !important;
-  margin-top: 60px !important;
+.sobre-secao .imagem-wrapper.principal {
+  width: 60%;
+  height: 400px;
 }
 
-.sobre-conteudo {
-  flex: 1 !important;
+.sobre-secao .imagem-wrapper.secundaria {
+  width: 50%;
+  height: 300px;
+  margin-top: 60px;
 }
 
-.sobre-subtitulo {
-  color: #c2593f !important;
-  text-transform: uppercase !important;
-  letter-spacing: 2px !important;
-  font-size: 0.9rem !important;
-  font-weight: 700 !important;
-  display: block !important;
-  margin-bottom: 10px !important;
+/* Conteúdo de Texto */
+.sobre-secao .sobre-conteudo {
+  flex: 1;
 }
 
-.sobre-conteudo h2 {
-  font-size: 2.5rem !important;
-  line-height: 1.2 !important;
-  margin-bottom: 25px !important;
-  color: #222 !important;
+.sobre-secao .sobre-subtitulo {
+  color: #c2593f;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  display: block;
+  margin-bottom: 10px;
 }
 
-.sobre-conteudo p {
-  font-size: 1.05rem !important;
-  line-height: 1.6 !important;
-  color: #555 !important;
-  margin-bottom: 20px !important;
+.sobre-secao .sobre-conteudo h2 {
+  font-size: 2.5rem;
+  line-height: 1.2;
+  margin-bottom: 25px;
+  color: #222222;
 }
 
-.sobre-diferenciais {
-  display: flex !important;
-  gap: 30px !important;
-  margin-top: 30px !important;
-  border-top: 1px solid #e8e5e1 !important;
-  padding-top: 25px !important;
+.sobre-secao .sobre-conteudo p {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #555555;
+  margin-bottom: 20px;
 }
 
-.diferencial-item {
-  flex: 1 !important;
+/* Diferenciais (Rodapé do Texto) */
+.sobre-secao .sobre-diferenciais {
+  display: flex;
+  gap: 30px;
+  margin-top: 30px;
+  border-top: 1px solid #e8e5e1;
+  padding-top: 25px;
 }
 
-.diferencial-item strong {
-  color: #222 !important;
-  font-size: 1.1rem !important;
-  display: block !important;
-  margin-bottom: 5px !important;
+.sobre-secao .diferencial-item {
+  flex: 1;
 }
 
-.diferencial-item p {
-  font-size: 0.95rem !important;
-  color: #666 !important;
+.sobre-secao .diferencial-item strong {
+  color: #222222;
+  font-size: 1.1rem;
+  display: block;
+  margin-bottom: 5px;
 }
 
-/* Regra apenas para telas menores (celular) */
+.sobre-secao .diferencial-item p {
+  font-size: 0.95rem;
+  color: #666666;
+  margin-bottom: 0;
+}
+
+/* --- RESPONSIVIDADE (Tablets e Celulares) --- */
 @media (max-width: 968px) {
-  .sobre-container {
-    flex-direction: column-reverse !important;
-    gap: 40px !important;
+  section.sobre-secao,
+  .sobre-secao {
+    padding: 50px 5%;
   }
-  
-  .imagem-wrapper.principal, 
-  .imagem-wrapper.secundaria {
-    width: 100% !important;
-    height: 250px !important;
-    margin-top: 0 !important;
+
+  .sobre-secao .sobre-container {
+    flex-direction: column-reverse; /* Coloca o texto no topo e imagens abaixo */
+    gap: 40px;
+  }
+
+  .sobre-secao .sobre-conteudo h2 {
+    font-size: 2rem;
+  }
+
+  .sobre-secao .sobre-imagens {
+    width: 100%;
+  }
+
+  .sobre-secao .imagem-wrapper.principal {
+    width: 55%;
+    height: 260px;
+  }
+
+  .sobre-secao .imagem-wrapper.secundaria {
+    width: 45%;
+    height: 220px;
+    margin-top: 30px;
+  }
+}
+
+@media (max-width: 576px) {
+  .sobre-secao .sobre-diferenciais {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .sobre-secao .imagem-wrapper.principal,
+  .sobre-secao .imagem-wrapper.secundaria {
+    height: 200px;
   }
 }

@@ -13,7 +13,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
   transition: transform 0.2s, background-color 0.2s;
   z-index: 9999;
 }
@@ -25,13 +25,13 @@
 
 .chat-window {
   position: fixed;
-  bottom: 105px;
+  bottom: 100px;
   right: 30px;
   width: 360px;
   height: 500px;
   background-color: white;
-  border-radius: 16px;  
-  box-shadow: 0px 10px 25px rgba(0,0,0,0.15);
+  border-radius: 16px;
+  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -40,12 +40,20 @@
 }
 
 @keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .hero-section {
-  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1000') no-repeat center center/cover;
+  background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1000")
+      no-repeat center center/cover;
   min-height: 85vh;
   color: white;
   display: flex;
@@ -53,7 +61,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 120px 20px 40px; 
+  padding: 120px 20px 40px;
   position: relative;
 }
 
@@ -73,7 +81,7 @@
 .nav-links {
   display: flex;
   list-style: none;
-  gap: 25px; 
+  gap: 25px;
   padding: 0;
   margin: 0;
   justify-content: center;
@@ -83,7 +91,7 @@
 .nav-links a {
   color: white;
   text-decoration: none;
-  font-weight: 500;  
+  font-weight: 500;
   transition: color 0.2s;
 }
 
@@ -127,25 +135,34 @@
   font-weight: bold;
   display: inline-block;
   margin-top: 20px;
-  transition: background 0.2s;  
+  transition: background 0.2s;
 }
 
 .cta-button:hover {
-  background-color: #ff6b81;  
+  background-color: #ff6b81;
 }
 
 .info-section {
   padding: 60px 20px;
-  text-align: center; 
+  text-align: center;
   width: 100%;
   display: block;
   clear: both;
 }
 
+/* Ajuste no rodapé / Ícone do LinkedIn */
+footer .linkedin-link,
+.footer-profile-access {
+  position: relative;
+  z-index: 10;
+  display: inline-block;
+  margin-right: 15px;
+}
+
 /* AJUSTES RESPONSIVOS PARA CELULAR */
 @media (max-width: 768px) {
   .hero-section {
-    padding-top: 140px;
+    padding-top: 160px;
     min-height: 90vh;
   }
 
@@ -168,5 +185,18 @@
 
   .hero-content h1 {
     font-size: 2rem;
+  }
+
+  /* Ajuste de adaptabilidade do Chat no Mobile */
+  .chat-window {
+    width: calc(100vw - 40px);
+    right: 20px;
+    bottom: 95px;
+    height: 70vh;
+  }
+
+  .floating-chat-button {
+    bottom: 20px;
+    right: 20px;
   }
 }

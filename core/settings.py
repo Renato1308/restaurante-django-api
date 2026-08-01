@@ -111,9 +111,8 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-STATICFILES_STORAGE = (
-    "whitenoise.storage.CompressedManifestStaticFilesStorage"
-)
+# Alterado para CompressedStaticFilesStorage para evitar falha se o manifesto estiver ausente
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
 
 # WhiteNoise
 WHITENOISE_AUTOREFRESH = DEBUG
@@ -122,6 +121,5 @@ WHITENOISE_USE_FINDERS = DEBUG
 # Chave primária padrão
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-#Força o Django a adicionar a barra no final das URLs automaticamente.
-
+# Força o Django a adicionar a barra no final das URLs automaticamente.
 APPEND_SLASH = True
