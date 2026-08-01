@@ -1,0 +1,383 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Renato's Bistrô</title>
+
+    <!-- Ícones FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Importação dos estilos estáticos -->
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="{% static 'css/global.css' %}">
+    <link rel="stylesheet" href="{% static 'css/App.css' %}">
+    <link rel="stylesheet" href="{% static 'css/sobreNos.css' %}">
+    <link rel="stylesheet" href="{% static 'css/contato.css' %}">
+    <link rel="stylesheet" href="{% static 'css/cardapio.css' %}?v=1.3">
+</head>
+<body>
+
+    <div class="landing-page">
+
+        <!-- 1. HERO-SECTION / HEADER -->
+        <header class="hero-section">
+            <nav class="navbar">
+                <ul class="nav-links">
+                    <li><a href="#menu">Cardápio</a></li>
+                    <li><a href="#sobre-nos">Sobre Nós</a></li>
+                    <li><a href="#contato">Contato</a></li>
+                </ul>
+
+                <div class="logo-center">
+                    <i class="fa-solid fa-utensils logo-icon" style="font-size: 32px;"></i>
+                    <span class="brand-title">Renato's Bistrô</span>
+                </div>
+            </nav>
+
+            <div class="hero-content">
+                <h1>O verdadeiro sabor da culinária artesanal</h1>
+                <p>Ingredientes frescos, receitas exclusivas e um toque de amor em cada prato.</p>
+                <a href="#menu" class="cta-button">Ver Cardápio Digital</a>
+            </div>
+        </header>
+
+        <!-- 2. SEÇÃO CARDÁPIO -->
+        <section id="menu" class="cardapio-container">
+            <div class="cardapio-header">
+                <span class="cardapio-subtitulo">Nosso Menu</span>
+                <h2>Explore nossas delícias artesanais</h2>
+                <p>Cada prato é uma experiência única, preparada com ingredientes selecionados e muito carinho.</p>
+            </div>
+
+            <div class="categoria-filtros">
+                {% for cat in categorias %}
+                    <button class="filtro-btn {% if forloop.first %}ativo{% endif %}" onclick="filtrarCategoria('{{ cat }}', this)">
+                        {{ cat }}
+                    </button>
+                {% empty %}
+                    <button class="filtro-btn ativo" onclick="filtrarCategoria('Pizza', this)">Pizza</button>
+                {% endfor %}
+            </div>
+
+            <div class="cardapio-grid">
+            {% for prato in pratos %}
+                <div class="card-item" data-categoria="{{ prato.categoria }}" {% if prato.categoria != categorias|first %}style="display: none;"{% endif %}>
+                    <div class="card-image-wrapper">
+                        <img class="card-image" src="{{ prato.get_imagem }}" alt="{{ prato.nome }}" loading="lazy" />
+                    </div>
+                    <div class="card-info">
+                        <h3>{{ prato.nome }}</h3>
+                        <p>{{ prato.descricao }}</p>
+                        <div class="card-footer">
+                            <div>
+                                <span class="card-preco-label">A partir de</span>
+                                <strong class="card-preco">R$ {{ prato.preco|floatformat:2 }}</strong>
+                            </div>
+                            <button class="card-btn-add">Adicionar</button>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p style="text-align: center; grid-column: 1/-1;">Nenhum prato cadastrado no momento. Cadastre pratos no painel admin!</p>
+            {% endfor %}
+            </div>
+        </section>
+
+        <!-- 3. SEÇÃO SOBRE NÓS -->
+        <section id="sobre-nos" class="sobre-secao">
+            <div class="sobre-container">
+                <div class="sobre-imagens">
+                    <div class="imagem-wrapper principal">
+                        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&auto=format&fit=crop&q=80" alt="Cozinha do Renato's Bistrô">
+                    </div>
+                    <div class="imagem-wrapper secundaria">
+                        <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=600&auto=format&fit=crop&q=80" alt="Ambiente do Restaurante">
+                    </div>
+                </div>
+                
+                <div class="sobre-conteudo">
+                    <span class="sobre-subtitulo">Nossa História</span>
+                    <h2>Paixão pela gastronomia, respeito aos ingredientes</h2>
+                    <p>
+                        O <strong>Renato's Bistrô</strong> nasceu do sonho de transformar refeições simples em momentos inesquecíveis.
+                        Fundado em 2024, nosso compromisso sempre foi unir a alta gastronomia a um ambiente acolhedor e descontraído.
+                    </p>
+                    <p>
+                        Cada prato do nosso menu - desde o nosso famoso Xis Coração até as massas de longa fermentação
+                        das nossas pizzas - é preparado artesanalmente com ingredientes selecionados de produtores locais.
+                        Aqui, nós não servimos apenas comida; nós compartilhamos nossa paixão.
+                    </p>
+
+                    <div class="sobre-diferenciais">
+                        <div class="diferencial-item">
+                            <strong>100% Artesanal</strong>
+                            <p>Molhos, misturas e massas feitas na casa.</p>
+                        </div>
+                        <div class="diferencial-item">
+                            <strong>Ingredientes Locais</strong>
+                            <p>Apoio aos produtores da nossa região.</p>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. SEÇÃO DE CONTATO -->
+        <section id="contato" class="contato-secao">
+            <div class="contato-container">
+
+                <div class="contato-info">
+                    <span class="contato-subtitulo">Fale Conosco</span>
+                    <h2>Venha nos visitar ou faça seu pedido.</h2>
+
+                    <div class="info-bloco">
+                        <strong>📍 Endereço</strong>
+                        <p>Rua dos Sabores, 742 - Bairro Gourmet, Porto Alegre - RS</p>
+                    </div>
+
+                    <div class="info-bloco">
+                        <strong>📞 Telefone / WhatsApp</strong>
+                        <p>(51) 99999-8888 / (51) 3333-2222</p>
+                    </div>
+
+                    <div class="info-bloco">
+                        <strong>🕕 Horário de Funcionamento</strong>
+                        <p>Terça a Domingo: 18h às 23h30</p>
+                        <p>Sábados e Domingos: Almoço das 11h30 às 15h</p>
+                    </div>          
+                </div>
+
+                <!-- Formulário de Contato -->
+                <div class="contato-formulario">
+                    <h3>Envie uma mensagem</h3>
+
+                    <div id="mensagem-sucesso" style="display: none; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: 500;">
+                        Obrigado pela sua mensagem, nossa equipe do Renato's Bistrô irá retornar o mais breve possível!
+                    </div>
+
+                    <form id="form-contato" action="https://formsubmit.co/renato130887@gmail.com" method="POST">
+                        <input type="hidden" name="_subject" value="Novo Contato - Renato's Bistrô!">
+                        <input type="hidden" name="_captcha" value="false">
+
+                        <div class="form-grupo">
+                            <label>Nome</label>
+                            <input type="text" name="Nome" placeholder="Seu nome completo" required>
+                        </div>
+
+                        <div class="form-grupo">
+                            <label>E-mail</label>
+                            <input type="email" name="E-mail" placeholder="seuemail@exemplo.com" required>
+                        </div>
+
+                        <div class="form-grupo">
+                            <label>Mensagem</label>
+                            <textarea name="Mensagem" rows="4" placeholder="Em que podemos ajudar? (Dúvidas, eventos, elogios...)" required></textarea>
+                        </div>
+
+                        <button type="submit" id="btn-enviar-contato" class="form-botao">Enviar Mensagem</button>      
+                    </form>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 5. BOTÃO FLUTUANTE E JANELA DO CHATBOT -->
+        <div class="chatbot-wrapper">
+            <div class="chat-window" id="chatWindow" style="display: none;">
+                <div class="chat-header">
+                    <div class="chat-header-info">
+                        <i class="fa-solid fa-robot"></i>
+                        <span>Atendente Renato's</span>
+                    </div>
+                    <button class="chat-close-btn" id="chatCloseBtn">&times;</button>
+                </div>
+                
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message bot-message">
+                        Olá! 👋 Sou o assistente virtual do Renato's Bistrô. Como posso te ajudar hoje?
+                    </div>
+                </div>
+
+                <form class="chat-input-area" id="chatForm">
+                    <input type="text" id="chatInput" placeholder="Digite sua mensagem..." autocomplete="off" required>
+                    <button type="submit" class="chat-send-btn" title="Enviar">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+
+            <button class="floating-chat-button" id="chatToggleBtn">
+                <i class="fa-solid fa-comments"></i>
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Scripts de Funcionalidade -->
+    <script>
+      // 1. FILTRO DAS CATEGORIAS
+      function filtrarCategoria(categoria, elemento) {
+        document.querySelectorAll('.filtro-btn').forEach(btn => btn.classList.remove('ativo'));
+        elemento.classList.add('ativo');
+
+        const cards = document.querySelectorAll('.card-item');
+        cards.forEach(card => {
+          const categoriaCard = card.dataset.categoria ? card.dataset.categoria.trim().toLowerCase() : '';
+          const categoriaAlvo = categoria.trim().toLowerCase();
+
+          if (categoriaCard === categoriaAlvo) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      }
+
+      // 2. ENVIO DE E-MAIL (FormSubmit AJAX)
+      const formContato = document.getElementById('form-contato');
+      const msgSucesso = document.getElementById('mensagem-sucesso');
+      const btnEnviar = document.getElementById('btn-enviar-contato');
+
+      if (formContato) {
+        formContato.addEventListener('submit', function(e) {
+          e.preventDefault();
+          btnEnviar.disabled = true;
+          btnEnviar.innerText = 'Enviando...';
+
+          fetch('https://formsubmit.co/ajax/renato130887@gmail.com', {
+            method: 'POST',
+            body: new FormData(formContato)
+          })
+          .then(response => response.json())
+          .then(data => {
+            btnEnviar.disabled = false;
+            btnEnviar.innerText = 'Enviar Mensagem';
+
+            if (data.success === "true" || data.success === true) {
+              formContato.reset();
+              formContato.style.display = 'none';
+              msgSucesso.style.display = 'block';
+
+              setTimeout(() => {
+                formContato.style.display = 'block';
+                msgSucesso.style.display = 'none';
+              }, 5000);
+            } else {
+              alert('Mensagem enviada com sucesso!');
+              formContato.reset();
+            }
+          })
+          .catch(error => {
+            btnEnviar.disabled = false;
+            btnEnviar.innerText = 'Enviar Mensagem';
+            alert('Mensagem enviada com sucesso!');
+            formContato.reset();
+          });
+        });
+      }
+
+      // 3. LÓGICA DO CHATBOT INTELIGENTE (COM TOLERÂNCIA A ERROS E ACENTOS)
+      const chatToggleBtn = document.getElementById('chatToggleBtn');
+      const chatWindow = document.getElementById('chatWindow');
+      const chatCloseBtn = document.getElementById('chatCloseBtn');
+      const chatForm = document.getElementById('chatForm');
+      const chatInput = document.getElementById('chatInput');
+      const chatMessages = document.getElementById('chatMessages');
+
+      chatToggleBtn.addEventListener('click', () => {
+        const isHidden = chatWindow.style.display === 'none';
+        chatWindow.style.display = isHidden ? 'flex' : 'none';
+        if (isHidden) chatInput.focus();
+      });
+
+      chatCloseBtn.addEventListener('click', () => {
+        chatWindow.style.display = 'none';
+      });
+
+      chatForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const texto = chatInput.value.trim();
+        if (!texto) return;
+
+        adicionarMensagem(texto, 'user');
+        chatInput.value = '';
+
+        setTimeout(() => {
+          responderBot(texto);
+        }, 600);
+      });
+
+      function adicionarMensagem(texto, tipo) {
+        const msgDiv = document.createElement('div');
+        msgDiv.classList.add('message', tipo === 'user' ? 'user-message' : 'bot-message');
+        msgDiv.innerText = texto;
+        chatMessages.appendChild(msgDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      // Função para remover acentos (normalizar texto)
+      function removerAcentos(str) {
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+      }
+
+      // Algoritmo de Distância de Levenshtein (calcula similaridade de palavras para erros de digitação)
+      function calcularSimilaridade(palavra1, palavra2) {
+        const a = palavra1;
+        const b = palavra2;
+        const matrix = [];
+
+        for (let i = 0; i <= b.length; i++) { matrix[i] = [i]; }
+        for (let j = 0; j <= a.length; j++) { matrix[0][j] = j; }
+
+        for (let i = 1; i <= b.length; i++) {
+          for (let j = 1; j <= a.length; j++) {
+            if (b.charAt(i - 1) === a.charAt(j - 1)) {
+              matrix[i][j] = matrix[i - 1][j - 1];
+            } else {
+              matrix[i][j] = Math.min(
+                matrix[i - 1][j - 1] + 1,
+                Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1)
+              );
+            }
+          }
+        }
+
+        const distancia = matrix[b.length][a.length];
+        const tamanhoMax = Math.max(a.length, b.length);
+        return 1 - (distancia / tamanhoMax); // Retorna porcentagem de similaridade (0 a 1)
+      }
+
+      // Verifica se alguma palavra digitada é muito parecida com a palavra-chave
+      function contemPalavraChave(textoTratado, palavraChave) {
+        if (textoTratado.includes(palavraChave)) return true;
+
+        const palavrasDoUsuario = textoTratado.split(/\s+/);
+        for (let p of palavrasDoUsuario) {
+          if (p.length >= 3 && calcularSimilaridade(p, palavraChave) >= 0.65) {
+            return true;
+          }
+        }
+        return false;
+      }
+
+      function responderBot(textoUsuario) {
+        const txt = removerAcentos(textoUsuario);
+        let resposta = "Desculpe, não entendi muito bem. Você pode me perguntar sobre nosso 'cardápio', 'horário de funcionamento' ou nosso 'endereço'!";
+
+        if (contemPalavraChave(txt, 'cardapio') || contemPalavraChave(txt, 'menu') || contemPalavraChave(txt, 'comida') || contemPalavraChave(txt, 'prato')) {
+          resposta = "Nosso cardápio conta com Pizzas, Lanches, Hambúrgueres, Vinhos e muito mais! Você pode navegar nos botões de filtro na seção Cardápio.";
+        } else if (contemPalavraChave(txt, 'horario') || contemPalavraChave(txt, 'hora') || contemPalavraChave(txt, 'aberto') || contemPalavraChave(txt, 'orario')) {
+          resposta = "Funcionamos de Terça a Domingo, das 18h às 23h30. Aos sábados e domingos também servimos almoço das 11h30 às 15h!";
+        } else if (contemPalavraChave(txt, 'endereco') || contemPalavraChave(txt, 'dereco') || contemPalavraChave(txt, 'onde') || contemPalavraChave(txt, 'local')) {
+          resposta = "Ficamos na Rua dos Sabores, 742 - Bairro Gourmet, Porto Alegre - RS.";
+        } else if (contemPalavraChave(txt, 'oi') || contemPalavraChave(txt, 'ola') || contemPalavraChave(txt, 'bom') || contemPalavraChave(txt, 'boa')) {
+          resposta = "Olá! Seja bem-vindo ao Renato's Bistrô. Como posso te ajudar hoje?";
+        }
+
+        adicionarMensagem(resposta, 'bot');
+      }
+    </script>
+</body>
+</html>
