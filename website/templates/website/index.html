@@ -62,26 +62,26 @@
             </div>
 
             <div class="cardapio-grid">
-            {% for prato in pratos %}
-                <div class="card-item" data-categoria="{{ prato.categoria }}" {% if prato.categoria != categorias|first %}style="display: none;"{% endif %}>
-                    <div class="card-image-wrapper">
-                        <img class="card-image" src="{{ prato.get_imagem }}" alt="{{ prato.nome }}" loading="lazy" />
-                    </div>
-                    <div class="card-info">
-                        <h3>{{ prato.nome }}</h3>
-                        <p>{{ prato.descricao }}</p>
-                        <div class="card-footer">
-                            <div>
-                                <span class="card-preco-label">A partir de</span>
-                                <strong class="card-preco">R$ {{ prato.preco|floatformat:2 }}</strong>
+                {% for prato in pratos %}
+                    <div class="card-item" data-categoria="{{ prato.categoria }}" {% if prato.categoria != categorias|first %}style="display: none;"{% endif %}>
+                        <div class="card-image-wrapper">
+                            <img class="card-image" src="{{ prato.get_imagem }}" alt="{{ prato.nome }}" loading="lazy" />
+                        </div>
+                        <div class="card-info">
+                            <h3>{{ prato.nome }}</h3>
+                            <p>{{ prato.descricao }}</p>
+                            <div class="card-footer">
+                                <div>
+                                    <span class="card-preco-label">A partir de</span>
+                                    <strong class="card-preco">R$ {{ prato.preco|floatformat:2 }}</strong>
+                                </div>
+                                <button class="card-btn-add">Adicionar</button>
                             </div>
-                            <button class="card-btn-add">Adicionar</button>
                         </div>
                     </div>
-                </div>
-            {% empty %}
-                <p style="text-align: center; grid-column: 1/-1;">Nenhum prato cadastrado no momento. Cadastre pratos no painel admin!</p>
-            {% endfor %}
+                {% empty %}
+                    <p style="text-align: center; grid-column: 1/-1;">Nenhum prato cadastrado no momento. Cadastre pratos no painel admin!</p>
+                {% endfor %}
             </div>
         </section>
 
@@ -96,7 +96,7 @@
                         <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=600&auto=format&fit=crop&q=80" alt="Ambiente do Restaurante">
                     </div>
                 </div>
-                
+
                 <div class="sobre-conteudo">
                     <span class="sobre-subtitulo">Nossa História</span>
                     <h2>Paixão pela gastronomia, respeito aos ingredientes</h2>
@@ -119,7 +119,7 @@
                             <strong>Ingredientes Locais</strong>
                             <p>Apoio aos produtores da nossa região.</p>
                         </div>
-                    </div> 
+                    </div>
                 </div>
             </div>
         </section>
@@ -146,7 +146,7 @@
                         <strong>🕕 Horário de Funcionamento</strong>
                         <p>Terça a Domingo: 18h às 23h30</p>
                         <p>Sábados e Domingos: Almoço das 11h30 às 15h</p>
-                    </div>          
+                    </div>
                 </div>
 
                 <!-- Formulário de Contato -->
@@ -154,12 +154,13 @@
                     <h3>Envie uma mensagem</h3>
 
                     <div id="mensagem-sucesso" style="display: none; background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; padding: 15px; border-radius: 8px; margin-bottom: 20px; font-weight: 500;">
-                        Obrigado pela sua mensagem, nossa equipe do Renato's Bistrô irá retornar o mais breve possível!
+                        Obrigado pela sua mensagem! A equipe do Renato's Bistrô retornará em breve.
                     </div>
 
                     <form id="form-contato" action="https://formsubmit.co/renato130887@gmail.com" method="POST">
                         <input type="hidden" name="_subject" value="Novo Contato - Renato's Bistrô!">
                         <input type="hidden" name="_captcha" value="false">
+                        <input type="hidden" name="_template" value="table">
 
                         <div class="form-grupo">
                             <label>Nome</label>
@@ -176,14 +177,45 @@
                             <textarea name="Mensagem" rows="4" placeholder="Em que podemos ajudar? (Dúvidas, eventos, elogios...)" required></textarea>
                         </div>
 
-                        <button type="submit" id="btn-enviar-contato" class="form-botao">Enviar Mensagem</button>      
+                        <button type="submit" id="btn-enviar-contato" class="form-botao">Enviar Mensagem</button>
                     </form>
                 </div>
 
             </div>
         </section>
 
-        <!-- 5. BOTÃO FLUTUANTE E JANELA DO CHATBOT -->
+        <!-- 5. RODAPÉ DO AUTOR (DESENVOLVEDOR) -->
+        <footer style="background-color: #111111; color: #ffffff; padding: 25px 20px; border-top: 2px solid #e74c3c; margin-top: 40px; text-align: center;">
+            <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 15px;">
+                
+                <div style="display: flex; align-items: center; gap: 15px; text-align: left;">
+                    <a href="{% static 'images/autor.jpg' %}" target="_blank" title="Clique para ver a foto em tamanho real">
+                        <img src="{% static 'images/autor.jpg' %}" 
+                             alt="Foto do Autor" 
+                             style="width: 55px; height: 55px; border-radius: 50%; object-fit: cover; border: 2px solid #e74c3c; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease;" 
+                             onmouseover="this.style.transform='scale(1.3)'; this.style.boxShadow='0 4px 10px rgba(0,0,0,0.3)';" 
+                             onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none';" 
+                             onerror="this.src='https://ui-avatars.com/api/?name=Renato&background=e74c3c&color=fff';">
+                    </a>
+                    <div>
+                        <p style="margin: 0; font-size: 0.95rem; font-weight: 600;">Desenvolvido por Renato Araujo</p>
+                        <p style="margin: 3px 0 0 0; font-size: 0.8rem; color: #aaaaaa;">Projeto Full Stack Django & Decoupled API</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 15px; font-size: 1.3rem;">
+                    <a href="https://github.com/Renato1308" target="_blank" rel="noopener noreferrer" style="color: #ffffff; transition: color 0.3s;" title="GitHub">
+                        <i class="fa-brands fa-github"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/renato-da-silva-araujo-363a361b0" target="_blank" rel="noopener noreferrer" style="color: #0a66c2; transition: color 0.3s;" title="LinkedIn">
+                        <i class="fa-brands fa-linkedin"></i>
+                    </a>
+                </div>
+
+            </div>
+        </footer>
+
+        <!-- 6. BOTÃO FLUTUANTE E JANELA DO CHATBOT -->
         <div class="chatbot-wrapper">
             <div class="chat-window" id="chatWindow" style="display: none;">
                 <div class="chat-header">
@@ -217,167 +249,175 @@
 
     <!-- Scripts de Funcionalidade -->
     <script>
-      // 1. FILTRO DAS CATEGORIAS
-      function filtrarCategoria(categoria, elemento) {
-        document.querySelectorAll('.filtro-btn').forEach(btn => btn.classList.remove('ativo'));
-        elemento.classList.add('ativo');
+        // 1. FILTRO DAS CATEGORIAS
+        function filtrarCategoria(categoria, elemento) {
+            document.querySelectorAll('.filtro-btn').forEach(btn => btn.classList.remove('ativo'));
+            elemento.classList.add('ativo');
 
-        const cards = document.querySelectorAll('.card-item');
-        cards.forEach(card => {
-          const categoriaCard = card.dataset.categoria ? card.dataset.categoria.trim().toLowerCase() : '';
-          const categoriaAlvo = categoria.trim().toLowerCase();
+            const cards = document.querySelectorAll('.card-item');
+            cards.forEach(card => {
+                const categoriaCard = card.dataset.categoria ? card.dataset.categoria.trim().toLowerCase() : '';
+                const categoriaAlvo = categoria.trim().toLowerCase();
 
-          if (categoriaCard === categoriaAlvo) {
-            card.style.display = 'flex';
-          } else {
-            card.style.display = 'none';
-          }
+                if (categoriaCard === categoriaAlvo) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // 2. ENVIO DE E-MAIL (FormSubmit AJAXDireto sem redirecionamento)
+        const formContato = document.getElementById('form-contato');
+        const msgSucesso = document.getElementById('mensagem-sucesso');
+        const btnEnviar = document.getElementById('btn-enviar-contato');
+
+        if (formContato) {
+            formContato.addEventListener('submit', function(e) {
+                e.preventDefault();
+                btnEnviar.disabled = true;
+                btnEnviar.innerText = 'Enviando...';
+
+                fetch('https://formsubmit.co/ajax/renato130887@gmail.com', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: formContato.querySelector('[name="Nome"]').value,
+                        email: formContato.querySelector('[name="E-mail"]').value,
+                        message: formContato.querySelector('[name="Mensagem"]').value,
+                        _subject: "Novo Contato - Renato's Bistrô!"
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    btnEnviar.disabled = false;
+                    btnEnviar.innerText = 'Enviar Mensagem';
+
+                    formContato.reset();
+                    formContato.style.display = 'none';
+                    msgSucesso.style.display = 'block';
+
+                    setTimeout(() => {
+                        formContato.style.display = 'block';
+                        msgSucesso.style.display = 'none';
+                    }, 6000);
+                })
+                .catch(error => {
+                    btnEnviar.disabled = false;
+                    btnEnviar.innerText = 'Enviar Mensagem';
+                    // Exibe mensagem amigável mesmo em resposta isolada
+                    formContato.reset();
+                    formContato.style.display = 'none';
+                    msgSucesso.style.display = 'block';
+
+                    setTimeout(() => {
+                        formContato.style.display = 'block';
+                        msgSucesso.style.display = 'none';
+                    }, 6000);
+                });
+            });
+        }
+
+        // 3. LÓGICA DO CHATBOT INTELIGENTE
+        const chatToggleBtn = document.getElementById('chatToggleBtn');
+        const chatWindow = document.getElementById('chatWindow');
+        const chatCloseBtn = document.getElementById('chatCloseBtn');
+        const chatForm = document.getElementById('chatForm');
+        const chatInput = document.getElementById('chatInput');
+        const chatMessages = document.getElementById('chatMessages');
+
+        chatToggleBtn.addEventListener('click', () => {
+            const isHidden = chatWindow.style.display === 'none';
+            chatWindow.style.display = isHidden ? 'flex' : 'none';
+            if (isHidden) chatInput.focus();
         });
-      }
 
-      // 2. ENVIO DE E-MAIL (FormSubmit AJAX)
-      const formContato = document.getElementById('form-contato');
-      const msgSucesso = document.getElementById('mensagem-sucesso');
-      const btnEnviar = document.getElementById('btn-enviar-contato');
-
-      if (formContato) {
-        formContato.addEventListener('submit', function(e) {
-          e.preventDefault();
-          btnEnviar.disabled = true;
-          btnEnviar.innerText = 'Enviando...';
-
-          fetch('https://formsubmit.co/ajax/renato130887@gmail.com', {
-            method: 'POST',
-            body: new FormData(formContato)
-          })
-          .then(response => response.json())
-          .then(data => {
-            btnEnviar.disabled = false;
-            btnEnviar.innerText = 'Enviar Mensagem';
-
-            if (data.success === "true" || data.success === true) {
-              formContato.reset();
-              formContato.style.display = 'none';
-              msgSucesso.style.display = 'block';
-
-              setTimeout(() => {
-                formContato.style.display = 'block';
-                msgSucesso.style.display = 'none';
-              }, 5000);
-            } else {
-              alert('Mensagem enviada com sucesso!');
-              formContato.reset();
-            }
-          })
-          .catch(error => {
-            btnEnviar.disabled = false;
-            btnEnviar.innerText = 'Enviar Mensagem';
-            alert('Mensagem enviada com sucesso!');
-            formContato.reset();
-          });
+        chatCloseBtn.addEventListener('click', () => {
+            chatWindow.style.display = 'none';
         });
-      }
 
-      // 3. LÓGICA DO CHATBOT INTELIGENTE (COM TOLERÂNCIA A ERROS E ACENTOS)
-      const chatToggleBtn = document.getElementById('chatToggleBtn');
-      const chatWindow = document.getElementById('chatWindow');
-      const chatCloseBtn = document.getElementById('chatCloseBtn');
-      const chatForm = document.getElementById('chatForm');
-      const chatInput = document.getElementById('chatInput');
-      const chatMessages = document.getElementById('chatMessages');
+        chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const texto = chatInput.value.trim();
+            if (!texto) return;
 
-      chatToggleBtn.addEventListener('click', () => {
-        const isHidden = chatWindow.style.display === 'none';
-        chatWindow.style.display = isHidden ? 'flex' : 'none';
-        if (isHidden) chatInput.focus();
-      });
+            adicionarMensagem(texto, 'user');
+            chatInput.value = '';
 
-      chatCloseBtn.addEventListener('click', () => {
-        chatWindow.style.display = 'none';
-      });
+            setTimeout(() => {
+                responderBot(texto);
+            }, 600);
+        });
 
-      chatForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const texto = chatInput.value.trim();
-        if (!texto) return;
+        function adicionarMensagem(texto, tipo) {
+            const msgDiv = document.createElement('div');
+            msgDiv.classList.add('message', tipo === 'user' ? 'user-message' : 'bot-message');
+            msgDiv.innerText = texto;
+            chatMessages.appendChild(msgDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
 
-        adicionarMensagem(texto, 'user');
-        chatInput.value = '';
+        function removerAcentos(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        }
 
-        setTimeout(() => {
-          responderBot(texto);
-        }, 600);
-      });
+        function calcularSimilaridade(palavra1, palavra2) {
+            const a = palavra1;
+            const b = palavra2;
+            const matrix = [];
 
-      function adicionarMensagem(texto, tipo) {
-        const msgDiv = document.createElement('div');
-        msgDiv.classList.add('message', tipo === 'user' ? 'user-message' : 'bot-message');
-        msgDiv.innerText = texto;
-        chatMessages.appendChild(msgDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-      }
+            for (let i = 0; i <= b.length; i++) { matrix[i] = [i]; }
+            for (let j = 0; j <= a.length; j++) { matrix[0][j] = j; }
 
-      // Função para remover acentos (normalizar texto)
-      function removerAcentos(str) {
-        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      }
-
-      // Algoritmo de Distância de Levenshtein (calcula similaridade de palavras para erros de digitação)
-      function calcularSimilaridade(palavra1, palavra2) {
-        const a = palavra1;
-        const b = palavra2;
-        const matrix = [];
-
-        for (let i = 0; i <= b.length; i++) { matrix[i] = [i]; }
-        for (let j = 0; j <= a.length; j++) { matrix[0][j] = j; }
-
-        for (let i = 1; i <= b.length; i++) {
-          for (let j = 1; j <= a.length; j++) {
-            if (b.charAt(i - 1) === a.charAt(j - 1)) {
-              matrix[i][j] = matrix[i - 1][j - 1];
-            } else {
-              matrix[i][j] = Math.min(
-                matrix[i - 1][j - 1] + 1,
-                Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1)
-              );
+            for (let i = 1; i <= b.length; i++) {
+                for (let j = 1; j <= a.length; j++) {
+                    if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                        matrix[i][j] = matrix[i - 1][j - 1];
+                    } else {
+                        matrix[i][j] = Math.min(
+                            matrix[i - 1][j - 1] + 1,
+                            Math.min(matrix[i][j - 1] + 1, matrix[i - 1][j] + 1)
+                        );
+                    }
+                }
             }
-          }
+
+            const distancia = matrix[b.length][a.length];
+            const tamanhoMax = Math.max(a.length, b.length);
+            return 1 - (distancia / tamanhoMax);
         }
 
-        const distancia = matrix[b.length][a.length];
-        const tamanhoMax = Math.max(a.length, b.length);
-        return 1 - (distancia / tamanhoMax); // Retorna porcentagem de similaridade (0 a 1)
-      }
+        function contemPalavraChave(textoTratado, palavraChave) {
+            if (textoTratado.includes(palavraChave)) return true;
 
-      // Verifica se alguma palavra digitada é muito parecida com a palavra-chave
-      function contemPalavraChave(textoTratado, palavraChave) {
-        if (textoTratado.includes(palavraChave)) return true;
-
-        const palavrasDoUsuario = textoTratado.split(/\s+/);
-        for (let p of palavrasDoUsuario) {
-          if (p.length >= 3 && calcularSimilaridade(p, palavraChave) >= 0.65) {
-            return true;
-          }
-        }
-        return false;
-      }
-
-      function responderBot(textoUsuario) {
-        const txt = removerAcentos(textoUsuario);
-        let resposta = "Desculpe, não entendi muito bem. Você pode me perguntar sobre nosso 'cardápio', 'horário de funcionamento' ou nosso 'endereço'!";
-
-        if (contemPalavraChave(txt, 'cardapio') || contemPalavraChave(txt, 'menu') || contemPalavraChave(txt, 'comida') || contemPalavraChave(txt, 'prato')) {
-          resposta = "Nosso cardápio conta com Pizzas, Lanches, Hambúrgueres, Vinhos e muito mais! Você pode navegar nos botões de filtro na seção Cardápio.";
-        } else if (contemPalavraChave(txt, 'horario') || contemPalavraChave(txt, 'hora') || contemPalavraChave(txt, 'aberto') || contemPalavraChave(txt, 'orario')) {
-          resposta = "Funcionamos de Terça a Domingo, das 18h às 23h30. Aos sábados e domingos também servimos almoço das 11h30 às 15h!";
-        } else if (contemPalavraChave(txt, 'endereco') || contemPalavraChave(txt, 'dereco') || contemPalavraChave(txt, 'onde') || contemPalavraChave(txt, 'local')) {
-          resposta = "Ficamos na Rua dos Sabores, 742 - Bairro Gourmet, Porto Alegre - RS.";
-        } else if (contemPalavraChave(txt, 'oi') || contemPalavraChave(txt, 'ola') || contemPalavraChave(txt, 'bom') || contemPalavraChave(txt, 'boa')) {
-          resposta = "Olá! Seja bem-vindo ao Renato's Bistrô. Como posso te ajudar hoje?";
+            const palavrasDoUsuario = textoTratado.split(/\s+/);
+            for (let p of palavrasDoUsuario) {
+                if (p.length >= 3 && calcularSimilaridade(p, palavraChave) >= 0.65) {
+                    return true;
+                }
+            }
+            return false;
         }
 
-        adicionarMensagem(resposta, 'bot');
-      }
+        function responderBot(textoUsuario) {
+            const txt = removerAcentos(textoUsuario);
+            let resposta = "Desculpe, não entendi muito bem. Você pode me perguntar sobre nosso 'cardápio', 'horário de funcionamento' ou nosso 'endereço'!";
+
+            if (contemPalavraChave(txt, 'cardapio') || contemPalavraChave(txt, 'menu') || contemPalavraChave(txt, 'comida') || contemPalavraChave(txt, 'prato')) {
+                resposta = "Nosso cardápio conta com Pizzas, Lanches, Hambúrgueres, Vinhos e muito mais! Você pode navegar nos botões de filtro na seção Cardápio.";
+            } else if (contemPalavraChave(txt, 'horario') || contemPalavraChave(txt, 'hora') || contemPalavraChave(txt, 'aberto') || contemPalavraChave(txt, 'orario')) {
+                resposta = "Funcionamos de Terça a Domingo, das 18h às 23h30. Aos sábados e domingos também servimos almoço das 11h30 às 15h!";
+            } else if (contemPalavraChave(txt, 'endereco') || contemPalavraChave(txt, 'dereco') || contemPalavraChave(txt, 'onde') || contemPalavraChave(txt, 'local')) {
+                resposta = "Ficamos na Rua dos Sabores, 742 - Bairro Gourmet, Porto Alegre - RS.";
+            } else if (contemPalavraChave(txt, 'oi') || contemPalavraChave(txt, 'ola') || contemPalavraChave(txt, 'bom') || contemPalavraChave(txt, 'boa')) {
+                resposta = "Olá! Seja bem-vindo ao Renato's Bistrô. Como posso te ajudar hoje?";
+            }
+
+            adicionarMensagem(resposta, 'bot');
+        }
     </script>
 </body>
 </html>
