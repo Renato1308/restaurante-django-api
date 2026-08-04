@@ -132,6 +132,21 @@ WHITENOISE_USE_FINDERS = DEBUG
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+# ==========================
+# CONFIGURAÇÕES DE ENVIO DE E-MAIL (SMTP GMAIL)
+# ==========================
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+# Credenciais lidas de forma segura das variáveis de ambiente da Render
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+RECIPIENT_ADDRESS = os.environ.get('RECIPIENT_ADDRESS', EMAIL_HOST_USER)
+
 # Chave primária padrão
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
