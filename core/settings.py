@@ -16,13 +16,13 @@ SECRET_KEY = os.environ.get(
     'django-insecure-p^50&=33dttjwse&*!=e%$6m@!14oxk0%%=4c*ix7ypkkt+1yv',
 )
 
-# DEBUG somente em desenvolvimento local
+# DEBUG (Lê das variáveis da Render ou padrão True em dev)
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 # Hosts permitidos
 ALLOWED_HOSTS = ['*']
 
-# Origens confiáveis para CSRF (essencial para formulários POST na Render)
+# Origens confiáveis para formulários POST via HTTPS na Render
 CSRF_TRUSTED_ORIGINS = [
     'https://*.onrender.com',
     'http://localhost',
@@ -34,7 +34,7 @@ if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
     CSRF_TRUSTED_ORIGINS.append(f'https://{RENDER_EXTERNAL_HOSTNAME}')
 
-# Aplicações
+# Aplicações instaladas
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -48,7 +48,7 @@ INSTALLED_APPS = [
 # Middlewares
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise para estáticos
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -59,9 +59,10 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'core.urls'
 
+# TEMPLATES (Caminho corrigido para o backend do Django)
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.DjangoTemplates',
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -83,12 +84,20 @@ DATABASES = {
     )
 }
 
-# Validação de senha
+# Validação de senhas
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
 ]
 
 # Internacionalização
@@ -104,20 +113,20 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Se você possui uma pasta 'static' na RAIZ do projeto, mantém. 
-# Caso contrário, o Django usará os estáticos dentro das pastas dos apps (ex: website/static).
 STATIC_DIR_PATH = BASE_DIR / 'static'
 if STATIC_DIR_PATH.exists():
     STATICFILES_DIRS = [STATIC_DIR_PATH]
 
-# Armazenamento simples e seguro do WhiteNoise (evita erro 500 por estático ausente)
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# WhiteNoise resiliente para produção
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+WHITENOISE_USE_FINDERS = True
+WHITENOISE_MANIFEST_STRICT = False
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # ==========================
-# CONFIGURAÇÕES DE E-MAIL
+# CONFIGURAÇÕES DE ENVIO DE E-MAIL (SMTP GMAIL)
 # ==========================
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -125,8 +134,8 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 RECIPIENT_ADDRESS = os.environ.get('RECIPIENT_ADDRESS', EMAIL_HOST_USER)
 
@@ -134,8 +143,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 APPEND_SLASH = True
 
 # ==========================
-# LOGS NO CONSOLE DA RENDER (Para ver erros no painel)
+# LOGS NO CONSOLE DA RENDER
 # ==========================
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
