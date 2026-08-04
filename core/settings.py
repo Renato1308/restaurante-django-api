@@ -10,26 +10,29 @@ import dj_database_url
 # Base do projeto
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Segurança - Em produção na Render usa a variável de ambiente, localmente usa a chave padrao
+# Segurança
 SECRET_KEY = os.environ.get(
     'SECRET_KEY',
     'django-insecure-p^50&=33dttjwse&*!=e%$6m@!14oxk0%%=4c*ix7ypkkt+1yv',
 )
 
 # DEBUG somente em desenvolvimento local
-DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-# Hosts permitidos (Aceita localhost, Render e qualquer domínio personalizado)
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    '.onrender.com',
+# Hosts permitidos
+ALLOWED_HOSTS = ['*']
+
+# Origens confiáveis para CSRF (essencial para formulários POST na Render)
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.onrender.com',
+    'http://localhost',
+    'http://127.0.0.1',
 ]
 
-# Se a Render fornecer um HOST específico via variável de ambiente, adiciona automaticamente
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+    CSRF_TRUSTED_ORIGINS.append(f'https://{RENDER_EXTERNAL_HOSTNAME}')
 
 # Aplicações
 INSTALLED_APPS = [
@@ -45,7 +48,7 @@ INSTALLED_APPS = [
 # Middlewares
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Servidor de arquivos estáticos
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise para estáticos
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -58,7 +61,7 @@ ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'BACKEND': 'django.template.backends.DjangoTemplates',
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -74,8 +77,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core.wsgi.application'
 
 # Banco de Dados
-# Em produção (Render), usa a DATABASE_URL do PostgreSQL se existir.
-# Em desenvolvimento local, usa o SQLite.
 DATABASES = {
     'default': dj_database_url.config(
         default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}", conn_max_age=600
@@ -84,56 +85,39 @@ DATABASES = {
 
 # Validação de senha
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 # Internacionalização
 LANGUAGE_CODE = 'pt-br'
-
 TIME_ZONE = 'America/Sao_Paulo'
-
 USE_I18N = True
 USE_TZ = True
 
 # ==========================
-# ARQUIVOS ESTÁTICOS (CSS, JS, Imagens de tema)
+# ARQUIVOS ESTÁTICOS & MEDIA
 # ==========================
 
 STATIC_URL = '/static/'
-
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
-
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# Armazenamento otimizado e compactado do WhiteNoise
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+# Se você possui uma pasta 'static' na RAIZ do projeto, mantém. 
+# Caso contrário, o Django usará os estáticos dentro das pastas dos apps (ex: website/static).
+STATIC_DIR_PATH = BASE_DIR / 'static'
+if STATIC_DIR_PATH.exists():
+    STATICFILES_DIRS = [STATIC_DIR_PATH]
 
-# WhiteNoise
-WHITENOISE_AUTOREFRESH = DEBUG
-WHITENOISE_USE_FINDERS = DEBUG
-
-# ==========================
-# ARQUIVOS DE MÍDIA (Uploads dos Pratos)
-# ==========================
+# Armazenamento simples e seguro do WhiteNoise (evita erro 500 por estático ausente)
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # ==========================
-# CONFIGURAÇÕES DE ENVIO DE E-MAIL (SMTP GMAIL)
+# CONFIGURAÇÕES DE E-MAIL
 # ==========================
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -141,14 +125,34 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
-# Credenciais lidas de forma segura das variáveis de ambiente da Render
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 RECIPIENT_ADDRESS = os.environ.get('RECIPIENT_ADDRESS', EMAIL_HOST_USER)
 
-# Chave primária padrão
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Força o Django a adicionar a barra no final das URLs automaticamente.
 APPEND_SLASH = True
+
+# ==========================
+# LOGS NO CONSOLE DA RENDER (Para ver erros no painel)
+# ==========================
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
